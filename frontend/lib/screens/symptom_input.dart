@@ -1,0 +1,1 @@
+// Symptom input screen
