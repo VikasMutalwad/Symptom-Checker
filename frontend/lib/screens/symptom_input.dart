@@ -3,7 +3,8 @@ import 'package:symptom_checker/models/user_model.dart';
 import 'package:symptom_checker/models/symptom_model.dart';
 import 'package:symptom_checker/widgets/custom_button.dart';
 import 'package:symptom_checker/widgets/symptom_checkbox.dart';
-import 'loading_screen.dart';
+import 'package:symptom_checker/services/api_service.dart';
+import 'result.dart';
 
 class SymptomInputScreen extends StatefulWidget {
   final User user;
@@ -75,7 +76,7 @@ class _SymptomInputScreenState extends State<SymptomInputScreen> {
             const SizedBox(height: 24),
             CustomButton(
               text: 'Analyze Symptoms',
-              onPressed: () {
+              onPressed: () async {
                 final selectedSymptoms = symptoms.where((s) => s.isSelected).toList();
                 if (selectedSymptoms.isEmpty) {
                   ScaffoldMessenger.of(context).showSnackBar(
@@ -83,19 +84,25 @@ class _SymptomInputScreenState extends State<SymptomInputScreen> {
                   );
                   return;
                 }
-                final symptomData = SymptomData(
-                  symptoms: selectedSymptoms,
-                  additionalSymptoms: _additionalController.text.isEmpty ? null : _additionalController.text,
-                );
-                Navigator.push(
-                  context,
-                  MaterialPageRoute(
-                    builder: (context) => LoadingScreen(
-                      user: widget.user,
-                      symptomData: symptomData,
-                    ),
-                  ),
-                );
+                final apiService = ApiService();
+                try {
+                  final result = await apiService.analyzeSymptoms(
+                    selectedSymptoms,
+                    _additionalController.text.isEmpty ? null : _additionalController.text,
+                  );
+                  if (mounted) {
+                    Navigator.pushReplacement(
+                      context,
+                      MaterialPageRoute(
+                        builder: (context) => ResultScreen(result: result),
+                      ),
+                    );
+                  }
+                } catch (e) {
+                  ScaffoldMessenger.of(context).showSnackBar(
+                    SnackBar(content: Text('Error analyzing symptoms: $e')),
+                  );
+                }
               },
             ),
           ],
