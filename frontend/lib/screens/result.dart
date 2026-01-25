@@ -15,121 +15,164 @@ class ResultScreen extends StatelessWidget {
         title: const Text('Diagnosis Result'),
         backgroundColor: Theme.of(context).primaryColor,
       ),
-      body: Padding(
-        padding: const EdgeInsets.all(16.0),
-        child: Column(
-          crossAxisAlignment: CrossAxisAlignment.start,
-          children: [
-            Card(
-              elevation: 4,
-              shape: RoundedRectangleBorder(
-                borderRadius: BorderRadius.circular(12),
-              ),
-              child: Padding(
-                padding: const EdgeInsets.all(16.0),
-                child: Column(
-                  crossAxisAlignment: CrossAxisAlignment.start,
-                  children: [
-                    const Text(
-                      'Probable Condition(s):',
-                      style: TextStyle(fontSize: 18, fontWeight: FontWeight.bold),
-                    ),
-                    const SizedBox(height: 8),
-                    ...result.conditions.map((condition) => Text(
-                      '• $condition',
-                      style: const TextStyle(fontSize: 16),
-                    )),
-                    const SizedBox(height: 16),
-                    Row(
+      body: SingleChildScrollView(
+        child: Padding(
+          padding: const EdgeInsets.all(16.0),
+          child: Column(
+            crossAxisAlignment: CrossAxisAlignment.start,
+            children: [
+              // Confidence Score Display
+              if (result.confidence > 0)
+                Card(
+                  elevation: 4,
+                  color: Colors.blue[900],
+                  shape: RoundedRectangleBorder(
+                    borderRadius: BorderRadius.circular(12),
+                  ),
+                  child: Padding(
+                    padding: const EdgeInsets.all(16.0),
+                    child: Column(
+                      crossAxisAlignment: CrossAxisAlignment.start,
                       children: [
                         const Text(
-                          'Severity: ',
-                          style: TextStyle(fontSize: 18, fontWeight: FontWeight.bold),
+                          'Analysis Confidence',
+                          style: TextStyle(
+                            fontSize: 14,
+                            color: Colors.white70,
+                          ),
                         ),
-                        Container(
-                          padding: const EdgeInsets.symmetric(horizontal: 12, vertical: 4),
-                          decoration: BoxDecoration(
-                            color: result.color,
-                            borderRadius: BorderRadius.circular(16),
-                          ),
-                          child: Text(
-                            result.severityText,
-                            style: const TextStyle(
-                              color: Colors.white,
-                              fontWeight: FontWeight.bold,
+                        const SizedBox(height: 8),
+                        Row(
+                          children: [
+                            Expanded(
+                              child: ClipRRect(
+                                borderRadius: BorderRadius.circular(10),
+                                child: LinearProgressIndicator(
+                                  value: result.confidence,
+                                  minHeight: 10,
+                                  backgroundColor: Colors.grey[700],
+                                  valueColor: AlwaysStoppedAnimation<Color>(
+                                    result.confidence > 0.8
+                                        ? Colors.green
+                                        : Colors.orange,
+                                  ),
+                                ),
+                              ),
                             ),
-                          ),
+                            const SizedBox(width: 12),
+                            Text(
+                              '${(result.confidence * 100).toStringAsFixed(0)}%',
+                              style: const TextStyle(
+                                fontSize: 18,
+                                fontWeight: FontWeight.bold,
+                                color: Colors.white,
+                              ),
+                            ),
+                          ],
                         ),
                       ],
                     ),
-                  ],
+                  ),
                 ),
-              ),
-            ),
-            const SizedBox(height: 24),
-            const Text(
-              'Guidance:',
-              style: TextStyle(fontSize: 20, fontWeight: FontWeight.bold),
-            ),
-            const SizedBox(height: 16),
-            Expanded(
-              child: Card(
+              const SizedBox(height: 24),
+              Card(
                 elevation: 4,
                 shape: RoundedRectangleBorder(
                   borderRadius: BorderRadius.circular(12),
                 ),
                 child: Padding(
                   padding: const EdgeInsets.all(16.0),
-                  child: SingleChildScrollView(
-                    child: Text(
-                      _getGuidanceText(),
-                      style: const TextStyle(fontSize: 16),
-                    ),
+                  child: Column(
+                    crossAxisAlignment: CrossAxisAlignment.start,
+                    children: [
+                      const Text(
+                        'Probable Condition(s):',
+                        style: TextStyle(fontSize: 18, fontWeight: FontWeight.bold),
+                      ),
+                      const SizedBox(height: 12),
+                      ...result.conditions.map((condition) => Padding(
+                        padding: const EdgeInsets.symmetric(vertical: 4.0),
+                        child: Row(
+                          children: [
+                            const Icon(Icons.check_circle, color: Colors.green, size: 20),
+                            const SizedBox(width: 12),
+                            Expanded(
+                              child: Text(
+                                condition,
+                                style: const TextStyle(fontSize: 16),
+                              ),
+                            ),
+                          ],
+                        ),
+                      )),
+                      const SizedBox(height: 16),
+                      Row(
+                        children: [
+                          const Text(
+                            'Severity: ',
+                            style: TextStyle(
+                              fontSize: 16,
+                              fontWeight: FontWeight.bold,
+                            ),
+                          ),
+                          Container(
+                            padding: const EdgeInsets.symmetric(
+                              horizontal: 12,
+                              vertical: 6,
+                            ),
+                            decoration: BoxDecoration(
+                              color: result.color,
+                              borderRadius: BorderRadius.circular(16),
+                            ),
+                            child: Text(
+                              result.severityText,
+                              style: const TextStyle(
+                                color: Colors.white,
+                                fontWeight: FontWeight.bold,
+                              ),
+                            ),
+                          ),
+                        ],
+                      ),
+                    ],
                   ),
                 ),
               ),
-            ),
-            const SizedBox(height: 24),
-            CustomButton(
-              text: 'Find Nearby Clinics',
-              onPressed: () {
-                Navigator.push(
-                  context,
-                  MaterialPageRoute(builder: (context) => const ClinicSuggestionScreen()),
-                );
-              },
-            ),
-          ],
+              const SizedBox(height: 24),
+              const Text(
+                'Guidance:',
+                style: TextStyle(fontSize: 20, fontWeight: FontWeight.bold),
+              ),
+              const SizedBox(height: 16),
+              Card(
+                elevation: 4,
+                shape: RoundedRectangleBorder(
+                  borderRadius: BorderRadius.circular(12),
+                ),
+                child: Padding(
+                  padding: const EdgeInsets.all(16.0),
+                  child: Text(
+                    'Please consult with a healthcare professional for proper diagnosis and treatment. This analysis is for informational purposes only.',
+                    style: TextStyle(fontSize: 16, color: Colors.grey[300]),
+                  ),
+                ),
+              ),
+              const SizedBox(height: 24),
+              CustomButton(
+                text: 'View Nearby Clinics',
+                onPressed: () {
+                  Navigator.push(
+                    context,
+                    MaterialPageRoute(
+                      builder: (context) => ClinicSuggestionScreen(clinics: result.clinics ?? []),
+                    ),
+                  );
+                },
+              ),
+            ],
+          ),
         ),
       ),
     );
-  }
-
-  String _getGuidanceText() {
-    switch (result.severity) {
-      case Severity.mild:
-      case Severity.moderate:
-        return '''
-First Aid Instructions:
-
-1. Rest and stay hydrated.
-2. Take over-the-counter pain relievers if needed.
-3. Monitor your symptoms closely.
-4. If symptoms worsen, seek medical attention.
-
-Remember to consult a healthcare professional for proper diagnosis and treatment.
-        ''';
-      case Severity.severe:
-        return '''
-WARNING: This appears to be a severe condition.
-
-Immediate Actions:
-- Seek emergency medical care immediately.
-- Call emergency services if experiencing chest pain or breathing difficulties.
-- Do not delay - get professional medical help right away.
-
-Your health is important. Act now!
-        ''';
-    }
   }
 }

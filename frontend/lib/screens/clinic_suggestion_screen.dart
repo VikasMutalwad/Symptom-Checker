@@ -1,31 +1,19 @@
 import 'package:flutter/material.dart';
 import 'package:symptom_checker/models/clinic_model.dart';
-import 'package:symptom_checker/services/api_service.dart';
 
 class ClinicSuggestionScreen extends StatefulWidget {
-  const ClinicSuggestionScreen({super.key});
+  final List<Clinic> clinics;
+  
+  const ClinicSuggestionScreen({super.key, this.clinics = const []});
 
   @override
   State<ClinicSuggestionScreen> createState() => _ClinicSuggestionScreenState();
 }
 
 class _ClinicSuggestionScreenState extends State<ClinicSuggestionScreen> {
-  List<Clinic> clinics = [];
-  bool isLoading = true;
-
   @override
   void initState() {
     super.initState();
-    _loadClinics();
-  }
-
-  Future<void> _loadClinics() async {
-    final apiService = ApiService();
-    final loadedClinics = await apiService.getNearbyClinics();
-    setState(() {
-      clinics = loadedClinics;
-      isLoading = false;
-    });
   }
 
   @override
@@ -35,23 +23,25 @@ class _ClinicSuggestionScreenState extends State<ClinicSuggestionScreen> {
         title: const Text('Nearby Clinics'),
         backgroundColor: Theme.of(context).primaryColor,
       ),
-      body: isLoading
-          ? const Center(child: CircularProgressIndicator())
-          : Padding(
-              padding: const EdgeInsets.all(16.0),
-              child: Column(
-                crossAxisAlignment: CrossAxisAlignment.start,
-                children: [
-                  const Text(
-                    'Recommended Clinics Near You:',
-                    style: TextStyle(fontSize: 20, fontWeight: FontWeight.bold),
-                  ),
-                  const SizedBox(height: 16),
-                  Expanded(
-                    child: ListView.builder(
-                      itemCount: clinics.length,
+      body: Padding(
+        padding: const EdgeInsets.all(16.0),
+        child: Column(
+          crossAxisAlignment: CrossAxisAlignment.start,
+          children: [
+            const Text(
+              'Recommended Clinics Near You:',
+              style: TextStyle(fontSize: 20, fontWeight: FontWeight.bold),
+            ),
+            const SizedBox(height: 16),
+            Expanded(
+              child: widget.clinics.isEmpty
+                  ? const Center(
+                      child: Text('No clinics found in your area'),
+                    )
+                  : ListView.builder(
+                      itemCount: widget.clinics.length,
                       itemBuilder: (context, index) {
-                        final clinic = clinics[index];
+                        final clinic = widget.clinics[index];
                         return Card(
                           elevation: 4,
                           margin: const EdgeInsets.only(bottom: 12),
@@ -63,10 +53,16 @@ class _ClinicSuggestionScreenState extends State<ClinicSuggestionScreen> {
                               clinic.name,
                               style: const TextStyle(fontWeight: FontWeight.bold),
                             ),
-                            subtitle: Text('Distance: ${clinic.distance}'),
+                            subtitle: Column(
+                              crossAxisAlignment: CrossAxisAlignment.start,
+                              children: [
+                                Text('Distance: ${clinic.distance}'),
+                                if (clinic.rating != null)
+                                  Text('Rating: ${clinic.rating}★'),
+                              ],
+                            ),
                             trailing: ElevatedButton.icon(
                               onPressed: () {
-                                // Mock call action
                                 ScaffoldMessenger.of(context).showSnackBar(
                                   SnackBar(content: Text('Calling ${clinic.name}')),
                                 );
@@ -84,10 +80,10 @@ class _ClinicSuggestionScreenState extends State<ClinicSuggestionScreen> {
                         );
                       },
                     ),
-                  ),
-                ],
-              ),
             ),
+          ],
+        ),
+      ),
     );
   }
 }

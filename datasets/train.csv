@@ -1,0 +1,21 @@
+symptoms,condition,severity
+Fever,Cough,Sore Throat,Common Cold,mild
+Fever,Cough,Fatigue,Flu,moderate
+Chest Pain,Breathing Difficulty,Shortness of Breath,Heart Condition,severe
+Headache,Nausea,Vomiting,Migraine,moderate
+Cough,Breathing Difficulty,Fatigue,Pneumonia,severe
+Fever,Headache,Muscle Pain,Dengue,moderate
+Nausea,Diarrhea,Loss of Appetite,Gastroenteritis,moderate
+Cough,Sore Throat,Loss of Appetite,Bronchitis,moderate
+Fever,Cough,Chest Pain,COVID-19,severe
+Headache,Fatigue,Muscle Pain,Common Cold,mild
+Shortness of Breath,Wheezing,Chest Tightness,Asthma,moderate
+Fever,Rash,Joint Pain,Measles,moderate
+Nausea,Stomach Pain,Diarrhea,Food Poisoning,moderate
+Sore Throat,Cough,Fever,Strep Throat,moderate
+Itching,Rash,Sneezing,Allergy,mild
+Fever,Cough,Sore Throat,Influenza,moderate
+Chest Pain,Heart Palpitations,Shortness of Breath,Arrhythmia,severe
+Fatigue,Weakness,Headache,Anemia,moderate
+Cough,Breathing Difficulty,Wheezing,COPD,severe
+Fever,Headache,Nausea,Meningitis,severe
