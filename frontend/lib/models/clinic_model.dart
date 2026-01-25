@@ -1,6 +1,13 @@
 class Clinic {
-  String name;
-  String distance;
+  final String name;
+  final String distance;
+  final String address;
+  final String phone;
 
-  Clinic({required this.name, required this.distance});
+  const Clinic({
+    required this.name,
+    required this.distance,
+    required this.address,
+    required this.phone,
+  });
 }

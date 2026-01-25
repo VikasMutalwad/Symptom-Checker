@@ -2,11 +2,18 @@ import 'package:flutter/material.dart';
 
 enum Severity { mild, moderate, severe }
 
-class DiagnosisResult {
-  List<String> conditions;
-  Severity severity;
+class Condition {
+  final String name;
+  final double probability;
+  final Severity severity;
+  final String description;
 
-  DiagnosisResult({required this.conditions, required this.severity});
+  const Condition({
+    required this.name,
+    required this.probability,
+    required this.severity,
+    required this.description,
+  });
 
   Color get color {
     switch (severity) {
@@ -28,5 +35,26 @@ class DiagnosisResult {
       case Severity.severe:
         return 'Severe';
     }
+  }
+}
+
+class DiagnosisResult {
+  final List<Condition> conditions;
+  final List<String> recommendations;
+  final bool urgentCare;
+
+  const DiagnosisResult({
+    required this.conditions,
+    required this.recommendations,
+    required this.urgentCare,
+  });
+
+  Severity get overallSeverity {
+    if (conditions.any((c) => c.severity == Severity.severe)) {
+      return Severity.severe;
+    } else if (conditions.any((c) => c.severity == Severity.moderate)) {
+      return Severity.moderate;
+    }
+    return Severity.mild;
   }
 }

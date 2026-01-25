@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
-import 'screens/welcome_screen.dart';
+import 'theme/app_theme.dart';
+import 'screens/splash_screen.dart';
 
 void main() {
   runApp(const MyApp());
@@ -11,18 +12,10 @@ class MyApp extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return MaterialApp(
-      title: 'AI Symptom Checker',
-      theme: ThemeData.dark().copyWith(
-        primaryColor: Colors.teal,
-        scaffoldBackgroundColor: Colors.grey[900],
-        cardColor: Colors.grey[800],
-        elevatedButtonTheme: ElevatedButtonThemeData(
-          style: ElevatedButton.styleFrom(
-            foregroundColor: Colors.white,
-          ),
-        ),
-      ),
-      home: const WelcomeScreen(),
+      title: 'AI-Powered Symptom Checker & Diagnosis Assistant',
+      theme: AppTheme.darkTheme,
+      home: const SplashScreen(),
+      debugShowCheckedModeBanner: false,
     );
   }
 }
