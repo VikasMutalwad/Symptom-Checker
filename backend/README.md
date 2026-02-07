@@ -1,99 +1,68 @@
-# Backend API Server
+# Symptom Checker Backend
 
-Express.js REST API for the Symptom Checker application.
+Node.js/Express backend for the AI-Powered Symptom Checker application.
 
 ## Setup
 
-```bash
-npm install
-npm start
-```
+1. Install dependencies:
+   ```bash
+   npm install
+   ```
 
-## Environment Variables
+2. Copy environment variables:
+   ```bash
+   cp .env.example .env
+   ```
 
-Create `.env` file:
+3. Add your Firebase service account key to `firebase/serviceAccountKey.json`
 
-```env
-PORT=5000
-NODE_ENV=development
-ML_API_URL=http://localhost:5001
-ML_API_ENDPOINT=/predict
-CORS_ORIGIN=*
-```
+4. Start the server:
+   ```bash
+   npm run dev  # Development
+   npm start    # Production
+   ```
 
-## API Routes
+## API Endpoints
 
-### POST `/api/analyze-symptoms`
-Analyze symptoms and get diagnosis
+### POST /api/analyze-symptoms
+Analyzes symptoms using AI/ML service.
 
-**Request:**
+**Request Body:**
 ```json
 {
-  "symptoms": ["Fever", "Cough"],
-  "additionalInfo": "Optional description",
-  "userDetails": {}
+  "age": 25,
+  "gender": "male",
+  "duration": "3-5 days",
+  "symptoms": ["fever", "cough"],
+  "additional_notes": "mild body pain"
 }
 ```
 
 **Response:**
 ```json
 {
-  "error": false,
-  "data": {
-    "diagnosis": {
-      "conditions": ["Common Cold"],
-      "confidence": 0.72,
-      "severity": "moderate"
-    },
-    "clinics": [
-      {"name": "City Hospital", "distance": "2.5 km"}
-    ],
-    "firstAid": {
-      "Common Cold": ["Rest", "Stay hydrated"]
+  "conditions": [
+    {
+      "name": "Viral Fever",
+      "confidence": 0.82
     }
-  }
+  ],
+  "severity": "Moderate",
+  "first_aid": ["Drink plenty of fluids", "Take rest"],
+  "action": "Doctor Consultation Recommended",
+  "emergency": false
 }
 ```
 
-### GET `/api/symptoms`
-Get available symptoms list
+### GET /api/symptoms
+Returns list of available symptoms.
 
-### GET `/api/clinics`
-Get nearby clinics
+### GET /api/clinics
+Returns mock clinic data.
 
-### GET `/health`
-Health check endpoint
+### GET /health
+Health check endpoint.
 
-## Dependencies
+## Deployment
 
-- **express** - Web framework
-- **cors** - Cross-origin requests
-- **axios** - HTTP client for ML API
-- **dotenv** - Environment variables
-- **body-parser** - Request body parsing
-
-## Project Structure
-
-```
-backend/
-├── server.js       # Express app setup
-├── routes.js       # API endpoints
-├── logic.js        # Business logic
-├── ml_client.js    # ML API client
-├── package.json    # Dependencies
-└── .env            # Configuration
-```
-
-## Development
-
-```bash
-# Start with auto-reload
-npm run dev
-
-# Test health check
-curl http://localhost:5000/health
-```
-
-## Integration with ML
-
-The backend automatically communicates with the Flask ML API at `ML_API_URL`. If ML API is unavailable, it falls back to mock diagnosis data.
+This backend is configured for deployment on Render. Make sure to set environment variables in your Render dashboard.
