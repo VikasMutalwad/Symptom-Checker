@@ -79,7 +79,7 @@ class _IntroScreenState extends State<IntroScreen>
                   builder: (context, child) {
                     return Transform.scale(
                       scale: _scaleAnimation.value,
-                      child: Icon(
+                      child: const Icon(
                         Icons.health_and_safety_outlined,
                         size: 100,
                         color: Colors.white,

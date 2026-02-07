@@ -66,3 +66,24 @@ Health check endpoint.
 ## Deployment
 
 This backend is configured for deployment on Render. Make sure to set environment variables in your Render dashboard.
+
+## Docker
+
+Build and run the backend with Docker:
+
+```bash
+docker build -t symptom-checker-backend .
+docker run -p 3001:3001 \
+  -e PORT=3001 \
+  -e ML_API_URL=http://ml-service:5000/predict \
+  -e FIREBASE_DATABASE_URL="https://<your-project>.firebaseio.com" \
+  -e FIREBASE_CREDENTIALS='{"type":"..."}' \
+  symptom-checker-backend
+```
+
+Recommended environment variables:
+- `PORT` (default 3001)
+- `ML_API_URL` (URL of ML prediction service)
+- `FIREBASE_DATABASE_URL` or `FIREBASE_CREDENTIALS` (JSON string for service account)
+- `FRONTEND_URL` (CORS origin)
+- `NODE_ENV` (production/development)

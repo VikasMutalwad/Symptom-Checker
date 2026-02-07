@@ -74,7 +74,7 @@ class _SplashScreenState extends State<SplashScreen>
               child: Column(
                 mainAxisAlignment: MainAxisAlignment.center,
                 children: [
-                  Icon(
+                  const Icon(
                     Icons.monitor_heart_outlined,
                     size: 120,
                     color: Colors.white,

@@ -12,7 +12,6 @@ class AppTheme {
       primaryColor: primaryColor,
       scaffoldBackgroundColor: const Color(0xFF121212),
       cardColor: const Color(0xFF1E1E1E),
-      dialogBackgroundColor: const Color(0xFF1E1E1E),
       appBarTheme: const AppBarTheme(
         backgroundColor: primaryColor,
         elevation: 0,
@@ -123,9 +122,8 @@ class AppTheme {
         primary: primaryColor,
         secondary: secondaryColor,
         surface: Color(0xFF1E1E1E),
-        background: Color(0xFF121212),
         error: dangerColor,
-      ),
+      ), dialogTheme: DialogThemeData(backgroundColor: const Color(0xFF1E1E1E)),
     );
   }
 }

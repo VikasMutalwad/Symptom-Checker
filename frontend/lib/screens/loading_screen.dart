@@ -66,7 +66,7 @@ class _LoadingScreenState extends State<LoadingScreen>
 
     // Simple mock logic based on symptoms
     if (selectedSymptoms.contains('Fever') && selectedSymptoms.contains('Cough')) {
-      return DiagnosisResult(
+      return const DiagnosisResult(
         conditions: [
           Condition(
             name: 'Common Cold',
@@ -90,7 +90,7 @@ class _LoadingScreenState extends State<LoadingScreen>
       );
     } else if (selectedSymptoms.contains('Chest Pain') ||
                selectedSymptoms.contains('Breathing Difficulty')) {
-      return DiagnosisResult(
+      return const DiagnosisResult(
         conditions: [
           Condition(
             name: 'Possible Cardiac Issue',
@@ -107,7 +107,7 @@ class _LoadingScreenState extends State<LoadingScreen>
         urgentCare: true,
       );
     } else {
-      return DiagnosisResult(
+      return const DiagnosisResult(
         conditions: [
           Condition(
             name: 'General Viral Infection',
