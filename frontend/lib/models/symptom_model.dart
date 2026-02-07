@@ -1,8 +1,11 @@
+import 'package:flutter/material.dart';
+
 class Symptom {
   String name;
+  IconData icon;
   bool isSelected;
 
-  Symptom({required this.name, this.isSelected = false});
+  Symptom({required this.name, required this.icon, this.isSelected = false});
 }
 
 class SymptomData {
